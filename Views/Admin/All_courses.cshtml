@@ -1,8 +1,5 @@
-﻿@model Faculty
+﻿@model IEnumerable<changes_project.Models.Course>
 
-@{
-    Layout = null;
-}
 
 
  @using Microsoft.AspNetCore.Identity
@@ -96,47 +93,45 @@
                 <!-- End Navbar -->
             </div>
 
+            <div class="container w-75">
+                <div class="page-inner">
+                    <h4 class="text-center mt-3"> All Courese</h4>
+                    <hr />
+                    <table class="table">
+                        <thead>
+                            <tr>
 
-            <div class="container w-50">
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CourseName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CourseFees)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                    <tr>
 
-                <h4>Faculty</h4>
-                <hr />
-
-                <form asp-action="add_faculty">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <div class="form-group">
-                        <label asp-for="Fname" class="control-label"></label>
-                        <input asp-for="Fname" class="form-control" />
-                        <span asp-validation-for="Fname" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Timing" class="control-label"></label>
-                        <select asp-for="Timing" class="form-control" asp-items="ViewBag.TimingOptions"></select>
-                        <span asp-validation-for="Timing" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Education" class="control-label"></label>
-                        <input asp-for="Education" class="form-control" />
-                        <span asp-validation-for="Education" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Skills" class="control-label"></label>
-                        <input asp-for="Skills" class="form-control" />
-                        <span asp-validation-for="Skills" class="text-danger"></span>
-                    </div>
-
-
-
-
-
-
-                    <div class="form-group">
-                        <input type="submit" value="Add Faculty" class="btn btn-primary" />
-                    </div>
-                </form>
+                                        <td>
+                                        @Html.DisplayFor(modelItem => item.CourseName)
+                                        </td>
+                                        <td>
+                                        @Html.DisplayFor(modelItem => item.CourseFees)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.CourseId">Edit</a> |
+                                            <a asp-action="Details" asp-route-id="@item.CourseId">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.CourseId">Delete</a>
+                                        </td>
+                                    </tr>
+                            }
+                        </tbody>
 
 
+                </div>
 
 
             </div>
@@ -365,8 +360,14 @@
     </script>
 </body>
 </html>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+
+
+
+

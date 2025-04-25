@@ -1,4 +1,5 @@
-﻿using Eproject.Areas.Identity.Data;
+﻿using changes_project.Models;
+using Eproject.Areas.Identity.Data;
 using Eproject.Data;
 using Eproject.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -223,9 +224,191 @@ namespace Eproject.Controllers
             return RedirectToAction("login", "Account");
         }
 
+       
+        public async Task<IActionResult> Edit_batch(int id)
+        {
+            var BData = await _context.Batches.FindAsync(id);
+            return View(BData);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit_batch(int id, Batch obj)
+        {
+            _context.Batches.Update(obj);
+            _context.SaveChanges();
+            TempData["success"] = "Dr Updated Successfully";
+            return Redirect("/Admin/All_batch");
+        }
+
+        public async Task<IActionResult> dlt_batch(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                if (user.Role == "0")
+                {
+                    return RedirectToAction("Index", "User");
+                }
+                else if (user.Role == "1")
+                {
+                    var BData = await _context.Batches.FindAsync(id);
+                    if (BData != null)
+                    {
+                        _context.Batches.Remove(BData);
+                        _context.SaveChanges();
+                        TempData["success"] = "Dr Deleted Successfully";
+                        return Redirect("/Admin/All_batch");
+                    }
+
+                }
+            }
+            return RedirectToAction("login", "Account");
+        }
+
+
+        public async Task<IActionResult> dlt_faculty(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                if (user.Role == "0")
+                {
+                    return RedirectToAction("Index", "User");
+                }
+                else if (user.Role == "1")
+                {
+                    var fData = await _context.Faculties.FindAsync(id);
+                    if (fData != null)
+                    {
+                        _context.Faculties.Remove(fData);
+                        _context.SaveChanges();
+                        TempData["success"] = "Dr Deleted Successfully";
+                        return Redirect("/Admin/All_faculty");
+                    }
+
+                }
+            }
+            return RedirectToAction("login", "Account");
+        }
+
+
+        public async Task<IActionResult> Edit_faculty(int id)
+        {
+            var fData = await _context.Faculties.FindAsync(id);
+            return View(fData);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit_faculty(int id, Faculty obj)
+        {
+            _context.Faculties.Update(obj);
+            _context.SaveChanges();
+            TempData["success"] = "Dr Updated Successfully";
+            return Redirect("/Admin/All_faculty");
+        }
+
+        public async Task<IActionResult> dlt_student(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                if (user.Role == "0")
+                {
+                    return RedirectToAction("Index", "User");
+                }
+                else if (user.Role == "1")
+                {
+                    var SData = await _context.Students.FindAsync(id);
+                    if (SData != null)
+                    {
+                        _context.Students.Remove(SData);
+                        _context.SaveChanges();
+                        TempData["success"] = "Dr Deleted Successfully";
+                        return Redirect("/Admin/all_students");
+                    }
+
+                }
+            }
+            return RedirectToAction("login", "Account");
+        }
+
+
+        public async Task<IActionResult> Edit_student(int id)
+        {
+            var SData = await _context.Students.FindAsync(id);
+            return View(SData);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit_student(int id, Student obj)
+        {
+            _context.Students.Update(obj);
+            _context.SaveChanges();
+            TempData["success"] = "Dr Updated Successfully";
+            return Redirect("/Admin/all_students");
+        }
+        public async Task<IActionResult> course()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                if (user.Role == "0")
+                {
+                    return RedirectToAction("Index", "User");
+                }
+                else if (user.Role == "1")
+                {
+                    return View();
+                }
+            }
+            return RedirectToAction("login", "Account");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> course(Course obj)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                if (user.Role == "0")
+                {
+                    return RedirectToAction("Index", "User");
+                }
+                else if (user.Role == "1")
+                {
+
+                    _context.Course.Add(obj);
+                    _context.SaveChanges();
+                    return RedirectToAction("course", "Admin");
+                }
+            }
+            return RedirectToAction("login", "Account");
+        }
+        public async Task<IActionResult> All_courses()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                if (user.Role == "0")
+                {
+                    return RedirectToAction("Index", "User");
+                }
+                else if (user.Role == "1")
+                {
+                    var abData = _context.Courses.ToList();
+                    return View(abData);
+                }
+            }
+            return RedirectToAction("login", "Account");
+        }
+
+
+
     }
 }
 
+
+  
 
 
 
